@@ -64,14 +64,16 @@ class Net(nn.Module):
         x = F.relu(self.fc2(x))
         
         # h3 = h2w3+b3
-        x = self.fc3(x)
+        x = F.sigmoid(self.fc3(x))
         
         return x
 
 net = Net()
 # [w1, b1, w2, b2, w3, b3]
-optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
+optimizer = optim.SGD(net.parameters(), lr=0.005, momentum=0.9)
 
+# 记录loss
+train_loss = []
 for epoch in range(3):
     
     for batch_idx, (x,y) in enumerate((train_loader)):
@@ -92,3 +94,35 @@ for epoch in range(3):
         loss.backward()
         # w' = W - lr*grad 更新梯度
         optimizer.step()
+        
+        # 记录每次的loss
+        train_loss.append(loss.item())
+        
+        if batch_idx % 10 == 0:
+            print(epoch, batch_idx, loss.item())
+# we get optimal [w1, b1, w2, b2, w3, b3]
+
+plot_curve(train_loss)
+
+
+# 利用accuracy判断模型的效果
+
+total_correct = 0
+for x,y in test_loader:
+    x = x.view(x.size(0), 28*28)
+    out = net(x)
+    # out: [b,10] => pred: [b]
+    pred = out.argmax(dim=1)
+    correct = pred.eq(y).sum().float().item()
+    total_correct += correct
+    
+total_num = len(test_loader.dataset)
+acc = total_correct / total_num
+print('test acc:', acc)
+
+# 直观查看是否预测正确
+
+x, y = next(iter(test_loader))
+out = net(x.view(x.size(0), 28*28))
+pred = out.argmax(dim=1)
+plot_image(x, pred, 'test')
