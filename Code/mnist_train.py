@@ -4,22 +4,25 @@ Created on Sun Nov 20 16:35:46 2022
 
 @author: Administrator
 """
-
+# In[]:
 import torch
 from torch import nn
 from torch.nn import functional as F
 from torch import optim
 
 import torchvision
-from matplotlib import pyplot as plt
 
 from utils import plot_image, plot_curve, one_hot
 
 
+
+# In[]:
 # step1. load dataset
 
+# 记录总批次数量
 batch_size = 512
 
+# 读取训练集
 train_loader = torch.utils.data.DataLoader(
     torchvision.datasets.MNIST('mnist_data',train=True, download=True,
                                 transform=torchvision.transforms.Compose([
@@ -29,7 +32,7 @@ train_loader = torch.utils.data.DataLoader(
                                     ])),
     batch_size=batch_size, shuffle=True)
 
-
+# 读取测试集
 test_loader = torch.utils.data.DataLoader(
     torchvision.datasets.MNIST('mnist_data/',train=False, download=True,
                                 transform=torchvision.transforms.Compose([
@@ -39,6 +42,7 @@ test_loader = torch.utils.data.DataLoader(
                                     ])),
     batch_size=batch_size, shuffle=True)
 
+# 设置x, y
 x, y = next(iter(train_loader))
 print(x.shape, y.shape )
 
