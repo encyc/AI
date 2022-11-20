@@ -47,8 +47,8 @@ x, y = next(iter(train_loader))
 print(x.shape, y.shape )
 
 plot_image(x,y,'image sample')
-
-
+x = x.cuda()
+y = y.cuda()
 class Net(nn.Module):
     
     def __init__(self):
@@ -130,3 +130,4 @@ x, y = next(iter(test_loader))
 out = net(x.view(x.size(0), 28*28))
 pred = out.argmax(dim=1)
 plot_image(x, pred, 'test')
+
