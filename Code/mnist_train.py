@@ -64,8 +64,8 @@ class Net(nn.Module):
         x = F.relu(self.fc2(x))
         
         # h3 = h2w3+b3
-        x = F.sigmoid(self.fc3(x))
-        
+        #x = F.sigmoid(self.fc3(x))
+        x = self.fc3(x)
         return x
 
 net = Net()
@@ -74,7 +74,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.005, momentum=0.9)
 
 # 记录loss
 train_loss = []
-for epoch in range(3):
+for epoch in range(10):
     
     for batch_idx, (x,y) in enumerate((train_loader)):
         
