@@ -48,3 +48,17 @@ def gradient_descent_runner(points, starting_b, starting_m,learning_rate, num_it
     for i in range(num_iterations):
         b, m = step_gradient(b, m, np.array(points), learning_rate)
     return [b, m]
+
+
+a = torch.randn(2,3)
+a
+
+a.type()
+type(a)
+
+isinstance(a,torch.FloatTensor)
+
+data = a.cuda()
+
+print(torch.__version__)
+print(torch.cuda.is_available())
